@@ -1,8 +1,7 @@
 tag @s add protego_owner_check
 
-# The owner tag makes the display collision safe for the caster while allowing
-# every other movable entity within the Protego shell to be bounced away.
-execute at @e[type=item_display,tag=aj.protego.root,limit=1,sort=nearest] as @e[distance=0..1.8,tag=!protego_owner_check,type=!item_display] facing entity @s eyes rotated ~ 0 run function hpww:main/spells/function/protego/bounce
+# The owner tag identifies the caster for the motion-aware display collision.
+execute at @e[type=item_display,tag=aj.protego.root,limit=1,sort=nearest] as @e[distance=0..1.8,tag=!protego_owner_check,type=!item_display] facing entity @s feet run function hpww:main/spells/function/protego/bounce
 
 tag @e[type=armor_stand, tag=protego_block_target, distance=0..3.5] remove protego_block_target
 tag @e[type=armor_stand, tag=protego_blockable, distance=0..3.5] add protego_block_target
