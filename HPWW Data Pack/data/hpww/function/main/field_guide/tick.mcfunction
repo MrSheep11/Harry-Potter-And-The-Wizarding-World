@@ -1,20 +1,6 @@
-#
-
-
-execute if score @s SettingsMenu.page.main matches 1 run function hpww:main/field_guide/gui/main_page/tick
-
-
-#checks for closing
-execute if score @s SettingsMenu.page.main matches 1 run function hpww:main/spells/function/api/uuid_selector/api/as_at_linked_entity {entity:"@e[tag=aj.field_guide_gui.root,limit=1,sort=nearest, distance=3..]",function:"aj:field_guide_gui/animations/close_page_main/play"}
-
-#checks for closing
-execute if score @s SettingsMenu.page.spell_wheel matches 1 run function hpww:main/spells/function/api/uuid_selector/api/at_linked_entity {entity:"@e[tag=aj.fg_spell_wheel.root,limit=1,sort=nearest, distance=3..]",function:"hpww:main/field_guide/gui/spell_wheel_page/close"}
-
-execute unless score @s hpww.api.UUID_Selector matches 1 unless score @s SettingsMenu.page.spell_wheel matches 1 run return fail
-
-#################
-
-scoreboard players set @s SettingsMenuStatus 0
-scoreboard players set @s SettingsMenu.page.main 0
-scoreboard players set @s hpww.api.UUID_Selector 0
-advancement revoke @s only hpww:blocks/main_wand/right_click_settings_button
+execute if entity @s[tag=hpww.fg.wheel_controls] unless score @s SettingsMenuStatus matches 1 run function hpww:main/field_guide/gui/spell_wheel_page/controls_overlay/hide
+execute if entity @s[tag=hpww.fg.drawer_controls] unless score @s SettingsMenuStatus matches 1 run function hpww:main/field_guide/gui/spell_wheel_page/controls_overlay/hide
+execute unless score @s SettingsMenuStatus matches 1 run return 0
+execute unless score @s hpww.fg.session matches 1.. run return run function hpww:main/field_guide/gui/internal/close_owned
+execute store result storage hpww:field_guide request.session int 1 run scoreboard players get @s hpww.fg.session
+function hpww:main/field_guide/gui/internal/session/tick with storage hpww:field_guide request

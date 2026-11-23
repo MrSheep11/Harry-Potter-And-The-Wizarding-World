@@ -5,6 +5,7 @@ from pathlib import Path
 import shutil
 import tempfile
 import unittest
+import zipfile
 
 from PIL import Image, ImageChops
 
@@ -184,6 +185,44 @@ class AddSpellTests(unittest.TestCase):
             1,
         )
         self.assertEqual(registry.count("in.cooldowns.codex_test_spell"), 1)
+
+    def test_drawer_placement_generates_models_and_unlock(self) -> None:
+        arguments = {
+            "raw_name": "codex_drawer_spell",
+            "image_path": self.source_icon,
+            "data_pack": self.data_pack,
+            "resource_pack": self.resource_pack,
+            "cooldown": 3,
+        }
+        with self.assertRaisesRegex(add_spell.GeneratorError, "already assigned"):
+            add_spell.build_spell(**arguments, drawer_page=1, drawer_slot=1)
+        with self.assertRaisesRegex(add_spell.GeneratorError, "both"):
+            add_spell.build_spell(**arguments, drawer_slot=8)
+
+        archive = self.root / "installed.zip"
+        with zipfile.ZipFile(archive, "w") as installed:
+            installed.writestr("pack.mcmeta", '{"pack":{"min_format":[97,1],"max_format":[97,1]}}')
+            installed.writestr("assets/hpww/existing.txt", "keep this")
+        name, _ = add_spell.build_spell(
+            **arguments, drawer_page=10, drawer_slot=8, resource_zip=archive
+        )
+        definitions = self.data_pack / add_spell.DEFINITIONS_FILE
+        self.assertIn(f'{add_spell.DRAWER_REGISTER}{{spell:"{name}",page:10,slot:8}}', definitions.read_text())
+        item = self.resource_pack / f"assets/hpww/items/field_guide/drawer/{name}.json"
+        cases = {case["when"] for case in json.loads(item.read_text())["model"]["cases"]}
+        self.assertEqual(len(cases), 28)
+        self.assertTrue({"slot_8_locked", "slot_8_selected", "wheel_4"} <= cases)
+        with zipfile.ZipFile(archive) as installed:
+            self.assertEqual(installed.read(item.relative_to(self.resource_pack).as_posix()), item.read_bytes())
+            self.assertEqual(installed.read("assets/hpww/existing.txt"), b"keep this")
+        unlock = self.data_pack / f"data/hpww/advancement/spells/unlocked/{name}_unlocked.json"
+        self.assertTrue(unlock.is_file())
+
+        add_spell.build_spell(**arguments, force=True, drawer_page=9, drawer_slot=7)
+        text = definitions.read_text()
+        self.assertIn(f'{add_spell.DRAWER_REGISTER}{{spell:"{name}",page:9,slot:7}}', text)
+        self.assertNotIn(f'{add_spell.DRAWER_REGISTER}{{spell:"{name}",page:10,slot:8}}', text)
+        self.assertEqual(text.count(add_spell.DRAWER_REGISTER + f'{{spell:"{name}"'), 1)
 
 
 if __name__ == "__main__":

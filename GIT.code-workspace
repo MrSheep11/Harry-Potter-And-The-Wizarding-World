@@ -5,7 +5,9 @@
 		}
 	],
 	"settings": {
-		"mc-dp-icons.crownedFunctionsNames": [],
+		"mc-dp-icons.crownedFunctionsNames": [
+			"spell_cooldown/spell_definitions"
+		],
 		"mc-dp-icons.crownedLoadFunctionsNames": [
 			"function/load"
 		],

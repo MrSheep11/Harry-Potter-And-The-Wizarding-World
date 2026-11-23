@@ -20,3 +20,19 @@ data modify storage hpww:gobal_spell_data expelliarmus set value {Spell:"expelli
 data modify storage hpww:gobal_spell_data protego set value {Spell:"protego",display_name:"Protego",icon_font:"custom_glyphs",Current_Key:"E014",Keys:{Active:"E014",Selected:"E014",Cooldown:{D_1:"E015",D_2:"E015",D_3:"E015",D_4:"E015",D_5:"E015",D_6:"E015",D_7:"E015",D_8:"E015",D_9:"E015",D_10:"E015",D_11:"E015",D_12:"E015",D_13:"E015",D_14:"E015",D_15:"E015",D_16:"E015",D_17:"E015",D_18:"E015",D_19:"E015",D_20:"E015",D_21:"E015",D_22:"E015",D_23:"E015",D_24:"E015",D_25:"E015",D_26:"E015"}}}
 
 data modify storage hpww:gobal_spell_data cooldown_registry set value ["lumos","levioso","protego", "depulso", "expelliarmus"]
+
+# Field Guide spell info. Use the text component you'd put after "tellraw @s".
+data modify storage hpww:gobal_spell_data lumos.drawer_message set value [{text:"Lumos",color:"#9fd6ff",bold:true},{text:" lights up your surroundings.",color:"white"}]
+data modify storage hpww:gobal_spell_data levioso.drawer_message set value [{text:"Levioso",color:"#ffed87",bold:true},{text:" lifts your target into the air.",color:"white"}]
+data modify storage hpww:gobal_spell_data depulso.drawer_message set value [{text:"Depulso",color:"#a187c8",bold:true},{text:" pushes your target away.",color:"white"}]
+data modify storage hpww:gobal_spell_data expelliarmus.drawer_message set value [{text:"Expelliarmus",color:"#b80101",bold:true},{text:" disarms your opponent.",color:"white"}]
+data modify storage hpww:gobal_spell_data protego.drawer_message set value [{text:"Protego",color:"gold",bold:true},{text:" shields you from incoming spells, pojectiles. or attacks.",color:"white"}]
+
+# Field Guide spell drawer placements. Pages 1-5 are Damage, Control, Force,
+# Utility, and Curses. Pages 6-10 are Other 1-5. Each page has slots 1-8.
+data modify storage hpww:field_guide drawer set value {}
+data modify storage hpww:field_guide models set value {}
+function hpww:main/field_guide/api/spell_wheel/register_spell {spell:"expelliarmus",page:1,slot:1}
+function hpww:main/field_guide/api/spell_wheel/register_spell {spell:"levioso",page:2,slot:1}
+function hpww:main/field_guide/api/spell_wheel/register_spell {spell:"depulso",page:3,slot:1}
+function hpww:main/field_guide/api/spell_wheel/register_spell {spell:"lumos",page:4,slot:1}

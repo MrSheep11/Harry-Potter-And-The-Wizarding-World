@@ -167,6 +167,7 @@ scoreboard objectives add spacefont dummy
 scoreboard players set #-1 spacefont -1
 
 # Spells
+function hpww:main/field_guide/load
 function hpww:main/spells/function/api/spell_cooldown/spell_definitions
 function hpww:main/spells/function/api/spell_trails/api/trail_definition_examples
 scoreboard objectives add expelliarmus_wand_slot dummy
@@ -270,6 +271,9 @@ scoreboard objectives add hpww.fg.spell_wheel_page.wheel_page dummy
 scoreboard objectives add hpww.fg.spell_wheel_page.notice_seen dummy
 scoreboard objectives add hpww.drawer_selected_slot dummy
 scoreboard objectives add hppw.field_guide.first_open_dialog dummy
+tag @e[type=item_display,tag=aj.field_guide_gui.root,scores={hpww.api.UUID_Linked=1..}] add hpww.fg.page_root
+tag @e[type=item_display,tag=aj.fg_spell_wheel.root,scores={hpww.api.UUID_Linked=1..}] add hpww.fg.page_root
+function #hpww:field_guide/register
 
 
 #bind spell api

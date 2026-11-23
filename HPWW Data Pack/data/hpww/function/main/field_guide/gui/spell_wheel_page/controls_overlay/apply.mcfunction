@@ -1,0 +1,1 @@
+$posteffect $(action) @s $(effect)

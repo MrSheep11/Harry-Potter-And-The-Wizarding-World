@@ -1,0 +1,208 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "minecraft:custom_model_data",
+    "index": 0,
+    "cases": [
+      {
+        "when": "slot_1_active",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/slot_1_active"
+        }
+      },
+      {
+        "when": "slot_1_selected",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/slot_1_selected"
+        }
+      },
+      {
+        "when": "slot_1_locked",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/slot_1_locked"
+        }
+      },
+      {
+        "when": "slot_2_active",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/slot_2_active"
+        }
+      },
+      {
+        "when": "slot_2_selected",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/slot_2_selected"
+        }
+      },
+      {
+        "when": "slot_2_locked",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/slot_2_locked"
+        }
+      },
+      {
+        "when": "slot_3_active",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/slot_3_active"
+        }
+      },
+      {
+        "when": "slot_3_selected",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/slot_3_selected"
+        }
+      },
+      {
+        "when": "slot_3_locked",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/slot_3_locked"
+        }
+      },
+      {
+        "when": "slot_4_active",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/slot_4_active"
+        }
+      },
+      {
+        "when": "slot_4_selected",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/slot_4_selected"
+        }
+      },
+      {
+        "when": "slot_4_locked",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/slot_4_locked"
+        }
+      },
+      {
+        "when": "slot_5_active",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/slot_5_active"
+        }
+      },
+      {
+        "when": "slot_5_selected",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/slot_5_selected"
+        }
+      },
+      {
+        "when": "slot_5_locked",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/slot_5_locked"
+        }
+      },
+      {
+        "when": "slot_6_active",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/slot_6_active"
+        }
+      },
+      {
+        "when": "slot_6_selected",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/slot_6_selected"
+        }
+      },
+      {
+        "when": "slot_6_locked",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/slot_6_locked"
+        }
+      },
+      {
+        "when": "slot_7_active",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/slot_7_active"
+        }
+      },
+      {
+        "when": "slot_7_selected",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/slot_7_selected"
+        }
+      },
+      {
+        "when": "slot_7_locked",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/slot_7_locked"
+        }
+      },
+      {
+        "when": "slot_8_active",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/slot_8_active"
+        }
+      },
+      {
+        "when": "slot_8_selected",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/slot_8_selected"
+        }
+      },
+      {
+        "when": "slot_8_locked",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/slot_8_locked"
+        }
+      },
+      {
+        "when": "wheel_1",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/wheel_1"
+        }
+      },
+      {
+        "when": "wheel_2",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/wheel_2"
+        }
+      },
+      {
+        "when": "wheel_3",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/wheel_3"
+        }
+      },
+      {
+        "when": "wheel_4",
+        "model": {
+          "type": "minecraft:model",
+          "model": "hpww:field_guide/drawer/depulso/wheel_4"
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:empty"
+    }
+  }
+}

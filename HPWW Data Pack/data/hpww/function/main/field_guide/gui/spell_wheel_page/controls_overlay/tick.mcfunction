@@ -1,0 +1,6 @@
+scoreboard players set #controls_hover hpww.fg.work 0
+function #bs.view:as_aimed_entity {run:"function hpww:main/field_guide/gui/spell_wheel_page/controls_overlay/check_target",with:{max_distance:5.0}}
+execute unless score #controls_hover hpww.fg.work matches 1 if entity @s[tag=hpww.fg.wheel_controls] run function hpww:main/field_guide/gui/spell_wheel_page/controls_overlay/toggle {action:"remove",row:"wheel",effect:"hpww:field_guide_spell_wheel_settings"}
+execute unless score #controls_hover hpww.fg.work matches 2 if entity @s[tag=hpww.fg.drawer_controls] run function hpww:main/field_guide/gui/spell_wheel_page/controls_overlay/toggle {action:"remove",row:"drawer",effect:"hpww:field_guide_spell_wheel_drawer_controls"}
+execute if score #controls_hover hpww.fg.work matches 1 unless entity @s[tag=hpww.fg.wheel_controls] run function hpww:main/field_guide/gui/spell_wheel_page/controls_overlay/toggle {action:"add",row:"wheel",effect:"hpww:field_guide_spell_wheel_settings"}
+execute if score #controls_hover hpww.fg.work matches 2 unless entity @s[tag=hpww.fg.drawer_controls] run function hpww:main/field_guide/gui/spell_wheel_page/controls_overlay/toggle {action:"add",row:"drawer",effect:"hpww:field_guide_spell_wheel_drawer_controls"}

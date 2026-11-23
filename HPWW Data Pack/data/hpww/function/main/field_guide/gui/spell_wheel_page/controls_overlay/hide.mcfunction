@@ -1,0 +1,2 @@
+execute if entity @s[tag=hpww.fg.wheel_controls] run function hpww:main/field_guide/gui/spell_wheel_page/controls_overlay/toggle {action:"remove",row:"wheel",effect:"hpww:field_guide_spell_wheel_settings"}
+execute if entity @s[tag=hpww.fg.drawer_controls] run function hpww:main/field_guide/gui/spell_wheel_page/controls_overlay/toggle {action:"remove",row:"drawer",effect:"hpww:field_guide_spell_wheel_drawer_controls"}

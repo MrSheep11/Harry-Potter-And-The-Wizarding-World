@@ -1,0 +1,7 @@
+{
+  "parent": "aj:blueprint/fg_spell_wheel/d_slot_4",
+  "textures": {
+    "0": "aj:blueprint/fg_spell_wheel/fg_levioso_locked",
+    "particle": "aj:blueprint/fg_spell_wheel/fg_levioso_locked"
+  }
+}

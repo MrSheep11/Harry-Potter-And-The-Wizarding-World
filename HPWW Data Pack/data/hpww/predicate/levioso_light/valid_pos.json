@@ -1,105 +1,105 @@
-[
-  {
-    "condition": "minecraft:inverted",
-    "term": {
-      "condition": "minecraft:reference",
-      "name": "hpww:levioso_light/pos_blocked"
-    }
-  },
-  {
-    "condition": "minecraft:inverted",
-    "term": {
-      "condition": "minecraft:location_check",
-      "offsetY": 1,
-      "predicate": {
-        "fluid": {
-          "fluid": "minecraft:flowing_water"
+{
+  "type": "minecraft:all_of",
+  "terms": [
+    {
+      "type": "minecraft:inverted",
+      "term": "hpww:levioso_light/pos_blocked"
+    },
+    {
+      "type": "minecraft:inverted",
+      "term": {
+        "type": "minecraft:location_check",
+        "offsetY": 1,
+        "predicate": {
+          "fluid": {
+            "fluid": "minecraft:flowing_water"
+          }
+        }
+      }
+    },
+    {
+      "type": "minecraft:inverted",
+      "term": {
+        "type": "minecraft:location_check",
+        "offsetY": 1,
+        "predicate": {
+          "fluid": {
+            "fluid": "minecraft:flowing_lava"
+          }
+        }
+      }
+    },
+    {
+      "type": "minecraft:inverted",
+      "term": {
+        "type": "minecraft:location_check",
+        "offsetY": 1,
+        "predicate": {
+          "block": {
+            "tag": "hpww:levioso_light_avoid"
+          }
+        }
+      }
+    },
+    {
+      "type": "minecraft:inverted",
+      "term": {
+        "type": "minecraft:location_check",
+        "offsetY": -1,
+        "predicate": {
+          "block": {
+            "tag": "hpww:levioso_light_avoid"
+          }
+        }
+      }
+    },
+    {
+      "type": "minecraft:inverted",
+      "term": {
+        "type": "minecraft:location_check",
+        "offsetX": 1,
+        "predicate": {
+          "block": {
+            "tag": "hpww:levioso_light_avoid"
+          }
+        }
+      }
+    },
+    {
+      "type": "minecraft:inverted",
+      "term": {
+        "type": "minecraft:location_check",
+        "offsetX": -1,
+        "predicate": {
+          "block": {
+            "tag": "hpww:levioso_light_avoid"
+          }
+        }
+      }
+    },
+    {
+      "type": "minecraft:inverted",
+      "term": {
+        "type": "minecraft:location_check",
+        "offsetZ": 1,
+        "predicate": {
+          "block": {
+            "tag": "hpww:levioso_light_avoid"
+          }
+        }
+      }
+    },
+    {
+      "type": "minecraft:inverted",
+      "term": {
+        "type": "minecraft:location_check",
+        "offsetZ": -1,
+        "predicate": {
+          "block": {
+            "tag": "hpww:levioso_light_avoid"
+          }
         }
       }
     }
-  },
-  {
-    "condition": "minecraft:inverted",
-    "term": {
-      "condition": "minecraft:location_check",
-      "offsetY": 1,
-      "predicate": {
-        "fluid": {
-          "fluid": "minecraft:flowing_lava"
-        }
-      }
-    }
-  },
-  {
-    "condition": "minecraft:inverted",
-    "term": {
-      "condition": "minecraft:location_check",
-      "offsetY": 1,
-      "predicate": {
-        "block": {
-          "tag": "hpww:levioso_light_avoid"
-        }
-      }
-    }
-  },
-  {
-    "condition": "minecraft:inverted",
-    "term": {
-      "condition": "minecraft:location_check",
-      "offsetY": -1,
-      "predicate": {
-        "block": {
-          "tag": "hpww:levioso_light_avoid"
-        }
-      }
-    }
-  },
-  {
-    "condition": "minecraft:inverted",
-    "term": {
-      "condition": "minecraft:location_check",
-      "offsetX": 1,
-      "predicate": {
-        "block": {
-          "tag": "hpww:levioso_light_avoid"
-        }
-      }
-    }
-  },
-  {
-    "condition": "minecraft:inverted",
-    "term": {
-      "condition": "minecraft:location_check",
-      "offsetX": -1,
-      "predicate": {
-        "block": {
-          "tag": "hpww:levioso_light_avoid"
-        }
-      }
-    }
-  },
-  {
-    "condition": "minecraft:inverted",
-    "term": {
-      "condition": "minecraft:location_check",
-      "offsetZ": 1,
-      "predicate": {
-        "block": {
-          "tag": "hpww:levioso_light_avoid"
-        }
-      }
-    }
-  },
-  {
-    "condition": "minecraft:inverted",
-    "term": {
-      "condition": "minecraft:location_check",
-      "offsetZ": -1,
-      "predicate": {
-        "block": {
-          "tag": "hpww:levioso_light_avoid"
-        }
-      }
-    }
-  }
-]
+  ]
+}

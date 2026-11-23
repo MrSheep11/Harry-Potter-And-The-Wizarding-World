@@ -108,9 +108,30 @@
         },
         {
             "type": "bitmap",
-            "file": "hpww:spell_wheel/left_mouse_doubble_click.png",
+            "file": "hpww:spell_wheel/mouse_icons/double_left_click.png",
             "chars": ["\uE040"],
-            "ascent": 11,
+            "ascent": -11,
+            "height": 16
+        },
+        {
+            "type": "bitmap",
+            "file": "hpww:spell_wheel/mouse_icons/left_click.png",
+            "chars": ["\uE041"],
+            "ascent": -11,
+            "height": 16
+        },
+        {
+            "type": "bitmap",
+            "file": "hpww:spell_wheel/mouse_icons/right_click.png",
+            "chars": ["\uE042"],
+            "ascent": -11,
+            "height": 16
+        },
+        {
+            "type": "bitmap",
+            "file": "hpww:spell_wheel/mouse_icons/double_right_click.png",
+            "chars": ["\uE043"],
+            "ascent": -11,
             "height": 16
         }
         

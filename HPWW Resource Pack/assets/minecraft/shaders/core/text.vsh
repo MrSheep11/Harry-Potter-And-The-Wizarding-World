@@ -1,31 +1,32 @@
 #version 330
+#extension GL_ARB_separate_shader_objects : require
 
 #if !defined(IS_GUI) && !defined(IS_SEE_THROUGH)
-#moj_import <minecraft:fog.glsl>
-#moj_import <minecraft:sample_lightmap.glsl>
+#include <minecraft:fog.glsl>
+#include <minecraft:sample_lightmap.glsl>
 #endif
 
-#moj_import <minecraft:globals.glsl>
-#moj_import <minecraft:dynamictransforms.glsl>
-#moj_import <minecraft:projection.glsl>
+#include <minecraft:globals.glsl>
+#include <minecraft:dynamictransforms.glsl>
+#include <minecraft:projection.glsl>
 
-in vec3 Position;
-in vec4 Color;
-in vec2 UV0;
+layout(location = 0) in vec3 Position;
+layout(location = 1) in vec4 Color;
+layout(location = 2) in vec2 UV0;
 #if !defined(IS_GUI) && !defined(IS_SEE_THROUGH)
-in ivec2 UV2;
+layout(location = 3) in ivec2 UV2;
 #endif
 
 #if !defined(IS_GUI) && !defined(IS_SEE_THROUGH)
 uniform sampler2D Sampler2;
-out float sphericalVertexDistance;
-out float cylindricalVertexDistance;
+layout(location = 0) out float sphericalVertexDistance;
+layout(location = 1) out float cylindricalVertexDistance;
 #endif
 
-out vec4 vertexColor;
-out vec2 texCoord0;
-flat out float hpwwGuiMarker;
-out vec2 hpwwGuiLocalOffset;
+layout(location = 2) out vec4 vertexColor;
+layout(location = 3) out vec2 texCoord0;
+layout(location = 4) flat out float hpwwGuiMarker;
+layout(location = 5) out vec2 hpwwGuiLocalOffset;
 
 const float HPWW_GUI_COLUMNS = 29.0;
 const float HPWW_GUI_ROWS = 15.0;
@@ -99,7 +100,7 @@ vec2 hpwwGuiApplyAlignment(vec2 target, int align, float glyphSize) {
 }
 vec2 hpwwGuiCornerOffset(float glyphSize) {
     float halfGlyph = glyphSize * 0.5;
-    int corner = gl_VertexID - (gl_VertexID / 4) * 4;
+    int corner = gl_VertexIndex - (gl_VertexIndex / 4) * 4;
     if (corner == 0) {
         return vec2(halfGlyph, halfGlyph);
     } else if (corner == 1) {

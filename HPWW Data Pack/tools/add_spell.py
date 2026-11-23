@@ -16,6 +16,7 @@ import subprocess
 import sys
 import tempfile
 from typing import Iterable
+import zipfile
 
 try:
     from PIL import Image, ImageDraw
@@ -29,6 +30,10 @@ except ImportError as exc:  # pragma: no cover - handled with a useful runtime e
 SCRIPT_PATH = Path(__file__).resolve()
 DEFAULT_DATA_PACK = SCRIPT_PATH.parent.parent
 DEFAULT_RESOURCE_PACK = DEFAULT_DATA_PACK.parent / "HPWW Resource Pack"
+PROFILE_RESOURCE_ZIP = (
+    Path.home() / "AppData/Roaming/ModrinthApp/profiles/Datapack Modpack 1.21.6"
+    / "resourcepacks/HPWW Resource Pack - 26.3.zip"
+)
 
 SPELLS_ROOT = Path("data/hpww/function/main/spells/function")
 COOLDOWN_ROOT = SPELLS_ROOT / "api/spell_cooldown"
@@ -41,6 +46,13 @@ FORCE_REFRESH_FILE = COOLDOWN_ROOT / "icons/force_refresh_all_icons.mcfunction"
 
 FONT_ROOT = Path("assets/hpww/font")
 TEXTURE_ROOT = Path("assets/hpww/textures/spell_wheel")
+DRAWER_TEXTURE_ROOT = Path("assets/hpww/textures/blueprint/field_guide/drawer")
+DRAWER_MODEL_PATH = "field_guide/drawer"
+DRAWER_REGISTER = "function hpww:main/field_guide/api/spell_wheel/register_spell "
+DRAWER_CALL = re.compile(
+    rf'^{re.escape(DRAWER_REGISTER)}\{{\s*spell\s*:\s*"([a-z][a-z0-9_]*)"'
+    r'\s*,\s*page\s*:\s*(\d+)\s*,\s*slot\s*:\s*(\d+)\s*\}$'
+)
 
 ICON_CANVAS = (34, 36)
 ICON_BOX = (4, 4, 30, 30)
@@ -314,6 +326,87 @@ def modify_shared_files(
     return updates
 
 
+def drawer_placement(
+    definitions: str, name: str, page: int | None, slot: int | None
+) -> tuple[str, bool]:
+    if (page is None) != (slot is None):
+        raise GeneratorError("Enter both a drawer page and a drawer slot.")
+    if page is not None and (not 1 <= page <= 10 or not 1 <= slot <= 8):
+        raise GeneratorError("Drawer page must be 1-10 and drawer slot must be 1-8.")
+    lines = definitions.splitlines()
+    found = False
+    kept = []
+    for line in lines:
+        match = DRAWER_CALL.fullmatch(line.strip())
+        if match:
+            spell, existing_page, existing_slot = match.groups()
+            if spell == name:
+                found = True
+                if page is not None:
+                    continue
+            elif (page, slot) == (int(existing_page), int(existing_slot)):
+                raise GeneratorError(
+                    f'Drawer page {page}, slot {slot} is already assigned to "{spell}".'
+                )
+        kept.append(line)
+    if page is None:
+        return definitions, found
+    if "data modify storage hpww:field_guide drawer set value {}" not in kept:
+        raise GeneratorError("This datapack does not have the Field Guide drawer registry.")
+    kept.append(f'{DRAWER_REGISTER}{{spell:"{name}",page:{page},slot:{slot}}}')
+    nl = newline_for(definitions)
+    return nl.join(kept) + nl, True
+
+
+def json_bytes(value: object) -> bytes:
+    return (json.dumps(value, indent=2) + "\n").encode("utf-8")
+
+
+def drawer_models(
+    resource_pack: Path, name: str, textures: dict[str, str]
+) -> dict[Path, bytes]:
+    model_root = f"{DRAWER_MODEL_PATH}/{name}"
+    outputs = {}
+    cases = []
+    geometries = {
+        **{f"slot_{slot}_{state}": (f"d_slot_{slot}", state)
+           for slot in range(1, 9) for state in ("active", "selected", "locked")},
+        **{f"wheel_{slot}": (f"w_slot_{slot}", "active") for slot in range(1, 5)},
+    }
+    for variant, (parent, state) in geometries.items():
+        model = f"{model_root}/{variant}"
+        outputs[resource_pack / f"assets/hpww/models/{model}.json"] = json_bytes({
+            "parent": f"aj:blueprint/fg_spell_wheel/{parent}",
+            "textures": {"0": textures[state], "particle": textures[state]},
+        })
+        cases.append({
+            "when": variant,
+            "model": {"type": "minecraft:model", "model": f"hpww:{model}"},
+        })
+    outputs[resource_pack / f"assets/hpww/items/{model_root}.json"] = json_bytes({
+        "model": {
+            "type": "minecraft:select", "property": "minecraft:custom_model_data",
+            "index": 0, "cases": cases, "fallback": {"type": "minecraft:empty"},
+        }
+    })
+    return outputs
+
+
+def drawer_assets(
+    resource_pack: Path, name: str, active: "Image.Image", selected: "Image.Image"
+) -> dict[Path, bytes]:
+    active_tile = active.crop((1, 1, 33, 33))
+    selected_tile = selected.crop((1, 1, 33, 33))
+    locked_tile = active_tile.convert("L").point(lambda channel: channel // 2).convert("RGBA")
+    locked_tile.putalpha(active_tile.getchannel("A"))
+    tiles = {"active": active_tile, "selected": selected_tile, "locked": locked_tile}
+    textures = {state: f"hpww:blueprint/{DRAWER_MODEL_PATH}/{name}/{state}" for state in tiles}
+    outputs = drawer_models(resource_pack, name, textures)
+    for state, tile in tiles.items():
+        outputs[resource_pack / DRAWER_TEXTURE_ROOT / name / f"{state}.png"] = image_bytes(tile)
+    return outputs
+
+
 def image_bytes(image: "Image.Image") -> bytes:
     output = io.BytesIO()
     image.save(output, format="PNG")
@@ -556,6 +649,31 @@ def commit_plan(plan: dict[Path, bytes]) -> None:
         raise
 
 
+def updated_resource_zip(
+    archive: Path, resource_pack: Path, plan: dict[Path, bytes]
+) -> bytes:
+    assets = {
+        path.relative_to(resource_pack).as_posix(): content
+        for path, content in plan.items()
+        if path.is_relative_to(resource_pack)
+    }
+    output = io.BytesIO()
+    try:
+        with zipfile.ZipFile(archive) as original:
+            metadata = json.loads(original.read("pack.mcmeta"))
+            if "pack" not in metadata:
+                raise GeneratorError("The selected ZIP has no resource pack metadata.")
+            with zipfile.ZipFile(output, "w", zipfile.ZIP_DEFLATED) as updated:
+                for entry in original.infolist():
+                    if entry.filename not in assets:
+                        updated.writestr(entry, original.read(entry))
+                for filename, content in assets.items():
+                    updated.writestr(filename, content)
+    except (zipfile.BadZipFile, KeyError, ValueError) as exc:
+        raise GeneratorError(f"Invalid resource pack ZIP: {archive}") from exc
+    return output.getvalue()
+
+
 def build_spell(
     *,
     raw_name: str,
@@ -563,6 +681,9 @@ def build_spell(
     data_pack: Path,
     resource_pack: Path,
     cooldown: float,
+    drawer_page: int | None = None,
+    drawer_slot: int | None = None,
+    resource_zip: Path | None = None,
     force: bool = False,
     dry_run: bool = False,
 ) -> tuple[str, list[Path]]:
@@ -610,7 +731,20 @@ def build_spell(
     # Shared registry edits are planned last so a failed asset write cannot leave
     # the pack pointing at files that were never created.
     plan.update(modify_shared_files(data_pack, name, display_name, force))
+    definitions_path = data_pack / DEFINITIONS_FILE
+    definitions, has_drawer = drawer_placement(
+        plan[definitions_path].decode("utf-8"), name, drawer_page, drawer_slot
+    )
+    plan[definitions_path] = definitions.encode("utf-8")
+    if has_drawer:
+        plan.update(drawer_assets(resource_pack, name, active, selected))
+        unlock_path = data_pack / f"data/hpww/advancement/spells/unlocked/{name}_unlocked.json"
+        if not unlock_path.exists():
+            plan[unlock_path] = json_bytes({"criteria": {"unlock": {"trigger": "minecraft:impossible"}}})
 
+    if resource_zip is not None:
+        archive = resource_zip.resolve()
+        plan[archive] = updated_resource_zip(archive, resource_pack, plan)
     if not dry_run:
         commit_plan(plan)
     return name, list(plan)
@@ -630,6 +764,9 @@ def cli_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--data-pack", type=Path, default=DEFAULT_DATA_PACK)
     parser.add_argument("--resource-pack", type=Path, default=DEFAULT_RESOURCE_PACK)
+    parser.add_argument("--drawer-page", type=int, help="Field Guide drawer category, 1-10")
+    parser.add_argument("--drawer-slot", type=int, help="Slot within the drawer category, 1-8")
+    parser.add_argument("--resource-zip", type=Path, help="Update an installed resource pack ZIP with the generated assets")
     parser.add_argument("--force", action="store_true", help="Rebuild an existing spell")
     parser.add_argument("--dry-run", action="store_true", help="Validate and list changes only")
     return parser
@@ -649,6 +786,9 @@ def launch_gui() -> int:
 
     name_value = tk.StringVar()
     image_value = tk.StringVar()
+    drawer_page_value = tk.StringVar()
+    drawer_slot_value = tk.StringVar()
+    update_zip_value = tk.BooleanVar(value=PROFILE_RESOURCE_ZIP.is_file())
 
     frame = ttk.Frame(root, padding=18)
     frame.grid(sticky="nsew")
@@ -674,6 +814,15 @@ def launch_gui() -> int:
     ttk.Button(frame, text="Browse...", command=choose_image).grid(
         row=3, column=1, padx=(8, 0), pady=(3, 14)
     )
+    ttk.Label(frame, text="Drawer page (optional)").grid(row=4, column=0, sticky="w")
+    ttk.Label(frame, text="Drawer slot (optional)").grid(row=4, column=1, sticky="w")
+    ttk.Combobox(frame, textvariable=drawer_page_value, values=("", *range(1, 11)),
+                 state="readonly", width=8).grid(row=5, column=0, sticky="w", pady=(3, 12))
+    ttk.Combobox(frame, textvariable=drawer_slot_value, values=("", *range(1, 9)),
+                 state="readonly", width=8).grid(row=5, column=1, sticky="w", pady=(3, 12))
+    if PROFILE_RESOURCE_ZIP.is_file():
+        ttk.Checkbutton(frame, text="Update the Modrinth 26.3 resource pack ZIP",
+                        variable=update_zip_value).grid(row=6, column=0, columnspan=2, sticky="w")
 
     def create_spell() -> None:
         try:
@@ -683,6 +832,9 @@ def launch_gui() -> int:
                 data_pack=DEFAULT_DATA_PACK,
                 resource_pack=DEFAULT_RESOURCE_PACK,
                 cooldown=3,
+                drawer_page=int(drawer_page_value.get()) if drawer_page_value.get() else None,
+                drawer_slot=int(drawer_slot_value.get()) if drawer_slot_value.get() else None,
+                resource_zip=PROFILE_RESOURCE_ZIP if update_zip_value.get() else None,
             )
         except (GeneratorError, OSError) as exc:
             messagebox.showerror("Could not create spell", str(exc), parent=root)
@@ -694,13 +846,16 @@ def launch_gui() -> int:
         )
         messagebox.showinfo(
             "Spell created",
-            f"Created {name} ({len(paths)} files updated).\n\n"
-            f"Run /reload, then bind it with:\n/{bind_command}",
+            f"Created {name} ({len(paths)} files updated).\n\n" +
+            (f"Drawer page {drawer_page_value.get()}, slot {drawer_slot_value.get()}.\n"
+             "Reload the datapack and resource pack. Unlock for testing with:\n"
+             f"/advancement grant @s only hpww:spells/unlocked/{name}_unlocked"
+             if drawer_page_value.get() else f"Run /reload, then bind it with:\n/{bind_command}"),
             parent=root,
         )
 
     ttk.Button(frame, text="Create Spell", command=create_spell).grid(
-        row=4, column=0, columnspan=2, sticky="ew"
+        row=7, column=0, columnspan=2, sticky="ew", pady=(8, 0)
     )
     name_entry.focus_set()
     root.mainloop()
@@ -728,6 +883,9 @@ def main(argv: list[str] | None = None) -> int:
             data_pack=args.data_pack,
             resource_pack=args.resource_pack,
             cooldown=args.cooldown,
+            drawer_page=args.drawer_page,
+            drawer_slot=args.drawer_slot,
+            resource_zip=args.resource_zip,
             force=args.force,
             dry_run=args.dry_run,
         )
@@ -738,7 +896,11 @@ def main(argv: list[str] | None = None) -> int:
     print(f'{action} {len(paths)} files for spell "{name}":')
     for path in paths:
         print(f"  {path}")
-    if not args.dry_run:
+    if not args.dry_run and args.drawer_page is not None:
+        print(f"\nDrawer page {args.drawer_page}, slot {args.drawer_slot}.")
+        print("Reload the datapack and resource pack. Unlock for testing with:")
+        print(f"/advancement grant @s only hpww:spells/unlocked/{name}_unlocked")
+    elif not args.dry_run:
         print("\nRun /reload, then bind it with:")
         print(
             "/function hpww:main/spells/function/api/bind_spell/api/bind "

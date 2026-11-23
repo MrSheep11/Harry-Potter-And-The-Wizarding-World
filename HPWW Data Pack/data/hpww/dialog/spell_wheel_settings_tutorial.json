@@ -16,7 +16,7 @@
     {
       "type": "minecraft:plain_message",
       "contents": {
-        "text": "Simply right click any unlocked spell from the \"Spell Drawer (Bottom 8 slots)\", then click on any of the 4 slots on the \"Spell Wheel (Top 4 Slots)\" to bind a spell.  You can also Left click any of the Spell Wheel slots to clear that slot."
+        "text": "Simply right click any unlocked spell from the \"Spell Drawer (Bottom 8 slots)\", then click on any of the 4 slots on the \"Spell Wheel (Top 4 Slots)\" to bind a spell.  You can also Left click any of the Spell Wheel slots to clear that slot. Left click any spell in the spell drawer to learn more about the spell."
       },
       "width": 300
     },

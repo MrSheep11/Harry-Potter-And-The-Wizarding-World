@@ -1,0 +1,58 @@
+{
+    "targets": {
+        "swap": {}
+    },
+    "passes": [
+        {
+            "vertex_shader": "minecraft:core/screenquad",
+            "fragment_shader": "hpww:post/field_guide_spell_wheel_settings",
+            "inputs": [
+                {
+                    "sampler_name": "In",
+                    "target": "minecraft:main"
+                },
+                {
+                    "sampler_name": "Overlay",
+                    "location": "hpww:spell_wheel/field_guide_spell_wheel_settings_controls_1",
+                    "width": 128,
+                    "height": 32
+                }
+            ],
+            "output": "swap",
+            "uniforms": {
+                "OverlayConfig": [
+                    {
+                        "name": "PixelScale",
+                        "type": "int",
+                        "value": 4
+                    },
+                    {
+                        "name": "TopPadding",
+                        "type": "int",
+                        "value": 10
+                    }
+                ]
+            }
+        },
+        {
+            "vertex_shader": "minecraft:core/screenquad",
+            "fragment_shader": "minecraft:post/blit",
+            "inputs": [
+                {
+                    "sampler_name": "In",
+                    "target": "swap"
+                }
+            ],
+            "output": "minecraft:main",
+            "uniforms": {
+                "BlitConfig": [
+                    {
+                        "name": "ColorModulate",
+                        "type": "vec4",
+                        "value": [1.0, 1.0, 1.0, 1.0]
+                    }
+                ]
+            }
+        }
+    ]
+}
