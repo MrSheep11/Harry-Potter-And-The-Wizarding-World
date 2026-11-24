@@ -136,6 +136,7 @@ schedule function release_fg:wheel_ready 18t replace
 execute unless entity @e[tag=aj.fg_spell_wheel.root] run say HPWW_FIELD_GUIDE_FAIL: next page never opened
 execute positioned 1.0 100 2.0 unless entity @e[tag=aj.fg_spell_wheel.root,distance=..0.000001] run say HPWW_FIELD_GUIDE_FAIL: wheel moved away from the anchor
 execute unless entity @e[tag=aj.fg_spell_wheel.root,nbt={Rotation:[0f,0f]}] run say HPWW_FIELD_GUIDE_FAIL: wheel turned from the anchor
+execute as HPWW_Test_A at @s run function release_fg:test_drawer_hitboxes
 execute as HPWW_Test_A at @s run function release_fg:test_wheel
 ${testOverlay ? aimAt('wheel_slot_2') + '\nschedule function release_fg:wheel_hover 3t replace' : 'function release_fg:leave_wheel'}
 `;
@@ -173,6 +174,28 @@ data modify entity @s interaction.player set from entity HPWW_Test_A UUID
 function aj:fg_spell_wheel/interactions/exit_interaction_on_interact
 data remove entity @s interaction
 `;
+  // Aim at centers derived from the models, not at the tagged hitbox positions.
+  entries.test_drawer_hitboxes = `function hpww:main/field_guide/api/spell_wheel/register_spell {spell:"expelliarmus",page:2,slot:2}
+advancement grant @s only hpww:spells/unlocked/levioso_unlocked
+advancement grant @s only hpww:spells/unlocked/expelliarmus_unlocked
+function hpww:main/field_guide/api/spell_wheel/show_drawer_page {page:2}
+function hpww:main/field_guide/gui/spell_wheel_page/bind/select_drawer_spell {slot:1}
+data modify storage hpww:gobal_spell_data expelliarmus.drawer_message set value {text:"HPWW_DRAWER_TEST_EXPELLIARMUS"}
+execute at @e[type=item_display,tag=aj.fg_spell_wheel.root,limit=1] positioned ^0.375 ^1.5 ^0.4375 anchored eyes run rotate @s facing ~ ~ ~
+function #bs.view:as_aimed_entity {run:"function release_fg:click_expelliarmus_hitbox",with:{max_distance:5.0}}
+execute unless score @s hpww.drawer_selected_slot matches 2 run say HPWW_FIELD_GUIDE_FAIL: clicking the visible Expelliarmus tile did not select slot 2
+execute unless entity @e[tag=aj.fg_spell_wheel.bone.d_slot_2,distance=..4,nbt={item:{components:{"minecraft:item_model":"hpww:field_guide/drawer/expelliarmus","minecraft:custom_model_data":{strings:["slot_2_selected"]}}}}] run say HPWW_FIELD_GUIDE_FAIL: Expelliarmus on page 2 slot 2 did not highlight
+execute unless entity @e[tag=aj.fg_spell_wheel.bone.d_slot_1,distance=..4,nbt={item:{components:{"minecraft:item_model":"hpww:field_guide/drawer/levioso","minecraft:custom_model_data":{strings:["slot_1_active"]}}}}] run say HPWW_FIELD_GUIDE_FAIL: Levioso highlight was not cleared
+scoreboard players set #drawer_slot_3_hit hpww.fg.work 0
+execute at @e[type=item_display,tag=aj.fg_spell_wheel.root,limit=1] positioned ^-0.3125 ^1.5 ^0.4375 anchored eyes run rotate @s facing ~ ~ ~
+function #bs.view:as_aimed_entity {run:"execute if entity @s[tag=aj.fg_spell_wheel.interaction.drawer_slot_3_interaction] run scoreboard players set #drawer_slot_3_hit hpww.fg.work 1",with:{max_distance:5.0}}
+execute unless score #drawer_slot_3_hit hpww.fg.work matches 1 run say HPWW_FIELD_GUIDE_FAIL: drawer slot 3 hitbox did not line up with its tile
+function hpww:main/field_guide/api/spell_wheel/show_drawer_page {page:1}
+`;
+  entries.click_expelliarmus_hitbox = `execute unless entity @s[tag=aj.fg_spell_wheel.interaction.drawer_slot_2_interaction] run return fail
+function release_fg:drawer_attack_a
+function release_fg:drawer_right_click
+`;
   entries.test_wheel = `
 function release_fg:page_arrows
 advancement revoke @s only hpww:spells/unlocked/lumos_unlocked
@@ -190,9 +213,39 @@ function hpww:main/field_guide/gui/spell_wheel_page/bind/generate_bind_api {slot
 function pdb:get_me_cached
 execute unless data storage pdb:main out.spell_wheel_data.spells.page_1.slot_4{Spell:"lumos"} run say HPWW_FIELD_GUIDE_FAIL: drawer slot 8 did not bind to wheel slot 4
 execute unless entity @e[tag=aj.fg_spell_wheel.bone.w_slot_4,distance=..3,nbt={item:{components:{"minecraft:item_model":"hpww:field_guide/drawer/lumos","minecraft:custom_model_data":{strings:["wheel_4"]}}}}] run say HPWW_FIELD_GUIDE_FAIL: bound wheel slot did not display spell
+function release_fg:test_all_drawer_slots
 `;
   const attackDrawer = (slot, player) =>
     `execute as @e[type=interaction,tag=aj.fg_spell_wheel.interaction.drawer_slot_${slot}_interaction,distance=..4,limit=1] at @s run function release_fg:drawer_attack_${player}`;
+  const drawerSlots = Array.from({length: 8}, (_, i) => i + 1);
+  const drawerModel = (slot, state) =>
+    `@e[tag=aj.fg_spell_wheel.bone.d_slot_${slot},distance=..4,nbt={item:{components:{"minecraft:item_model":"hpww:field_guide/drawer/lumos","minecraft:custom_model_data":{strings:["slot_${slot}_${state}"]}}}}]`;
+  entries.test_all_drawer_slots = [
+    'data modify storage hpww:gobal_spell_data lumos.drawer_message set value {text:"HPWW_DRAWER_TEST_ALL_SLOTS"}',
+    ...drawerSlots.map(slot =>
+      `function hpww:main/field_guide/api/spell_wheel/register_spell {spell:"lumos",page:8,slot:${slot}}`),
+    'execute as @e[type=interaction,tag=aj.fg_spell_wheel.bone.spell_drawer.decendant.interaction,distance=..4] run function release_fg:clear_drawer_hooks',
+    'function hpww:main/field_guide/api/spell_wheel/show_drawer_page {page:8}',
+    ...drawerSlots.flatMap(slot => [
+      attackDrawer(slot, 'a'),
+      `execute as @e[type=interaction,tag=aj.fg_spell_wheel.interaction.drawer_slot_${slot}_interaction,distance=..4,limit=1] at @s run function release_fg:drawer_right_click`,
+      `execute unless score @s hpww.drawer_selected_slot matches ${slot} run say HPWW_FIELD_GUIDE_FAIL: drawer slot ${slot} failed right click`,
+      `execute unless entity ${drawerModel(slot, 'selected')} run say HPWW_FIELD_GUIDE_FAIL: drawer slot ${slot} did not highlight`,
+      ...(slot > 1 ? [`execute unless entity ${drawerModel(slot - 1, 'active')} run say HPWW_FIELD_GUIDE_FAIL: previous drawer slot ${slot - 1} stayed highlighted`] : []),
+    ]),
+    'function hpww:main/field_guide/api/spell_wheel/show_drawer_page {page:10}',
+  ].join('\n') + '\n';
+  entries.clear_drawer_hooks = `tag @s remove hpww.fg.drawer_clicks
+data remove entity @s data.animated_java.on_interact_function
+data remove entity @s data.animated_java.on_attack_function
+`;
+  entries.drawer_right_click = `data modify entity @s interaction set value {player:[I;0,0,0,0],timestamp:0L}
+data modify entity @s interaction.player set from entity HPWW_Test_A UUID
+execute store result entity @s interaction.timestamp long 1 run time query gametime
+execute as HPWW_Test_A at @s run function animated_java:global/interactions/interaction/on
+execute if data entity @s interaction run say HPWW_FIELD_GUIDE_FAIL: drawer right click was not dispatched
+data remove entity @s interaction
+`;
   entries.test_drawer_messages = `data modify storage hpww:gobal_spell_data lumos.drawer_message set value [{text:"HPWW_DRAWER_TEST_LUMOS "},{selector:"@s"}]
 data modify storage hpww:gobal_spell_data levioso.drawer_message set value {text:"HPWW_DRAWER_TEST_LEVIOSO"}
 ${attackDrawer(8, 'a')}
@@ -337,12 +390,16 @@ async function main() {
   if (pageApi && completed) {
     const lumos = drawerMessages.filter(({text}) => text.includes('HPWW_DRAWER_TEST_LUMOS'));
     const levioso = drawerMessages.filter(({text}) => text.includes('HPWW_DRAWER_TEST_LEVIOSO'));
+    const allSlots = drawerMessages.filter(({text}) => text.includes('HPWW_DRAWER_TEST_ALL_SLOTS'));
+    const expelliarmus = drawerMessages.filter(({text}) => text.includes('HPWW_DRAWER_TEST_EXPELLIARMUS'));
     if (lumos.length !== 2 || lumos.some(({text}) => !text.includes('HPWW_Test_A')) || levioso.length !== 1) {
       failures.push('Expected two Lumos messages with the clicker name and one Levioso message.');
     }
     if (drawerMessages.some(({username}) => username !== 'HPWW_Test_A')) {
       failures.push('Drawer message was sent to a player who did not own the drawer.');
     }
+    if (allSlots.length !== 8) failures.push(`Expected a left-click message from each drawer slot (found ${allSlots.length}).`);
+    if (expelliarmus.length !== 1) failures.push('Expected the visible Expelliarmus tile to dispatch one left-click message.');
   }
   const result = {baseline, connected, completed, serverExitCode: code, drawerMessages, failures};
   fs.writeFileSync(path.join(root, 'result.json'), JSON.stringify(result, null, 2) + '\n');
