@@ -1,0 +1,8 @@
+{
+    "type": "minecraft:dialog_list",
+    "title": "Challenges",
+    "columns": 1,
+    "dialogs": [
+        "hpww:field_guide/challenges/chapter_1"
+    ]
+}

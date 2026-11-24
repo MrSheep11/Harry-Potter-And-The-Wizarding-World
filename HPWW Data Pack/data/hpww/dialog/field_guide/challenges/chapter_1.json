@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:dialog_list",
+    "title": "Chapter 1",
+    "columns": 1,
+    "button_width": 200,
+    "body": {
+        "type": "minecraft:plain_message",
+        "contents": {
+            "text": "Learn the basic spells of the Wizarding World"
+        }
+    },
+    "dialogs": [
+        "hpww:field_guide/challenges/chapter_1/welcome_to_the_wizarding_world",
+        "hpww:field_guide/challenges/chapter_1/learn_protego",
+        "hpww:field_guide/challenges/chapter_1/learn_levioso",
+        "hpww:field_guide/challenges/chapter_1/learn_depulso",
+        "hpww:field_guide/challenges/chapter_1/learn_expelliarmus",
+        "hpww:field_guide/challenges/chapter_1/learn_lumos"
+    ]
+}
