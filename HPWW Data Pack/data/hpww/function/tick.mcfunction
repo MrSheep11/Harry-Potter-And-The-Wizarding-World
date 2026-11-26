@@ -86,7 +86,7 @@ function hpww:main/spells/function/levioso/function/tick
 function hpww:main/brewing/cauldron/tick
 
 #level and field_guide
-execute as @a run function hpww:main/spells/function/skills/level/tick
+function hpww:main/spells/function/api/level/tick
 
 execute as @a at @s run function hpww:main/field_guide/tick
 

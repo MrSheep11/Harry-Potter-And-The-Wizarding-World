@@ -1,2 +1,2 @@
-scoreboard players set @s hpww.gainingXP 1
-$scoreboard players add @s hpww.xp_nextlevel $(score)
+# Compatibility with the original {score: ...} call.
+$return run function hpww:main/spells/function/api/level/add_xp {amount:$(score)}

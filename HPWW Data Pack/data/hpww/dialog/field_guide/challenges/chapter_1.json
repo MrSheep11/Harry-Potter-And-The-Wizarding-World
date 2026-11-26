@@ -11,10 +11,6 @@
     },
     "dialogs": [
         "hpww:field_guide/challenges/chapter_1/welcome_to_the_wizarding_world",
-        "hpww:field_guide/challenges/chapter_1/learn_protego",
-        "hpww:field_guide/challenges/chapter_1/learn_levioso",
-        "hpww:field_guide/challenges/chapter_1/learn_depulso",
-        "hpww:field_guide/challenges/chapter_1/learn_expelliarmus",
-        "hpww:field_guide/challenges/chapter_1/learn_lumos"
+        "hpww:field_guide/challenges/chapter_1/foundational_spells"
     ]
 }

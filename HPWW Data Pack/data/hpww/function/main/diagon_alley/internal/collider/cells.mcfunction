@@ -1,0 +1,9 @@
+$execute positioned ^-1 ^0 ^ run function hpww:main/diagon_alley/internal/collider/$(action)_cell {cell:0}
+$execute positioned ^-1 ^1 ^ run function hpww:main/diagon_alley/internal/collider/$(action)_cell {cell:1}
+$execute positioned ^-1 ^2 ^ run function hpww:main/diagon_alley/internal/collider/$(action)_cell {cell:2}
+$execute positioned ^0 ^0 ^ run function hpww:main/diagon_alley/internal/collider/$(action)_cell {cell:3}
+$execute positioned ^0 ^1 ^ run function hpww:main/diagon_alley/internal/collider/$(action)_cell {cell:4}
+$execute positioned ^0 ^2 ^ run function hpww:main/diagon_alley/internal/collider/$(action)_cell {cell:5}
+$execute positioned ^1 ^0 ^ run function hpww:main/diagon_alley/internal/collider/$(action)_cell {cell:6}
+$execute positioned ^1 ^1 ^ run function hpww:main/diagon_alley/internal/collider/$(action)_cell {cell:7}
+$execute positioned ^1 ^2 ^ run function hpww:main/diagon_alley/internal/collider/$(action)_cell {cell:8}

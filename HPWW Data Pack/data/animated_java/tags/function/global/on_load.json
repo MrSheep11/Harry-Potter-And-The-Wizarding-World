@@ -1,6 +1,7 @@
 {
 	"replace": false,
 	"values": [
+		"aj:diagonalley_enterance/on_load",
 		"aj:fg_spell_wheel/on_load",
 		"aj:field_guide_gui/on_load",
 		"aj:hpww_alter/on_load",

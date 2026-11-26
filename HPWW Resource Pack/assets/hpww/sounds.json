@@ -7,5 +7,14 @@
             "attenuation_distance":1
             }
         ]
+    },
+    "crunching_rock_hits_and_rumble": {
+        "sounds": ["hpww:crunching_rock_hits_and_rumble"]
+    },
+    "diagon_alley_wall_scrape": {
+        "sounds": ["hpww:diagon_alley_wall_scrape"]
+    },
+    "diagon_alley_scrape_2": {
+        "sounds": ["hpww:diagon_alley_scrape_2"]
     }
 }

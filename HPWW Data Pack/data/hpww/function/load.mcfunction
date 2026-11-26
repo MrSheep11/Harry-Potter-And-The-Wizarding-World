@@ -250,6 +250,7 @@ scoreboard players set #default spell_trail_speed 1000
 scoreboard objectives add target.glowing dummy
  
 # level
+function hpww:main/spells/function/api/level/internal/load
 scoreboard objectives add hpww.gainingXP dummy
 scoreboard objectives add hpww.xp_nextlevel dummy
 scoreboard objectives add hpww.total_xp_nextlevel dummy
@@ -284,3 +285,12 @@ scoreboard objectives add hpww.api.bind_spell.slot dummy
 
 scoreboard objectives add hpww.start_button.interaction_pressed dummy
 advancement revoke @a only hpww:first_join_mail
+scoreboard objectives add diagonalley_wall dummy
+scoreboard objectives add hpww.diagon_alley.rig dummy
+scoreboard objectives add hpww.diagon_alley.round dummy
+scoreboard objectives add hpww.diagon_alley.close_at dummy
+scoreboard objectives add hpww.diagon_alley.collider dummy
+schedule function hpww:main/diagon_alley/internal/collider/sweep 20t replace
+schedule function hpww:main/diagon_alley/internal/hints/tick 5t replace
+schedule function hpww:main/diagon_alley/internal/cleanup/loaded 20t replace
+

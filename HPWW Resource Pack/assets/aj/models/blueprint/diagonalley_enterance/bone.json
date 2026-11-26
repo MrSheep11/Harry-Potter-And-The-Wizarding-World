@@ -1,0 +1,121 @@
+{
+	"textures": {
+		"0": "aj:blueprint/diagonalley_enterance/brick",
+		"particle": "minecraft:item/pufferfish"
+	},
+	"display": {
+		"head": {
+			"rotation": [0, 180, 0]
+		}
+	},
+	"elements": [
+		{
+			"from": [5.6, 6.97143, 7.31429],
+			"to": [10.4, 9.02857, 8.68571],
+			"rotation": {
+				"x": 0,
+				"y": 0,
+				"z": 0,
+				"origin": [6.97143, 6.28571, 8]
+			},
+			"faces": {
+				"north": {
+					"uv": [0, 4, 7, 7],
+					"texture": "#0"
+				},
+				"east": {
+					"uv": [15, 4, 16, 7],
+					"texture": "#0"
+				},
+				"south": {
+					"uv": [0, 4, 7, 7],
+					"texture": "#0"
+				},
+				"west": {
+					"uv": [7, 4, 8, 7],
+					"texture": "#0"
+				},
+				"up": {
+					"uv": [0, 3, 7, 4],
+					"texture": "#0"
+				},
+				"down": {
+					"uv": [0, 7, 7, 8],
+					"texture": "#0"
+				}
+			}
+		},
+		{
+			"from": [5.6, -4, 7.31429],
+			"to": [10.4, -1.94286, 8.68571],
+			"rotation": {
+				"x": 0,
+				"y": 0,
+				"z": 0,
+				"origin": [6.97143, -4.68571, 8]
+			},
+			"faces": {
+				"north": {
+					"uv": [0, 4, 7, 7],
+					"texture": "#0"
+				},
+				"east": {
+					"uv": [15, 4, 16, 7],
+					"texture": "#0"
+				},
+				"south": {
+					"uv": [0, 4, 7, 7],
+					"texture": "#0"
+				},
+				"west": {
+					"uv": [7, 4, 8, 7],
+					"texture": "#0"
+				},
+				"up": {
+					"uv": [0, 3, 7, 4],
+					"texture": "#0"
+				},
+				"down": {
+					"uv": [0, 7, 7, 8],
+					"texture": "#0"
+				}
+			}
+		},
+		{
+			"from": [5.6, -14.97143, 7.31429],
+			"to": [10.4, -12.91429, 8.68571],
+			"rotation": {
+				"x": 0,
+				"y": 0,
+				"z": 0,
+				"origin": [6.97143, -15.65714, 8]
+			},
+			"faces": {
+				"north": {
+					"uv": [0, 4, 7, 7],
+					"texture": "#0"
+				},
+				"east": {
+					"uv": [15, 4, 16, 7],
+					"texture": "#0"
+				},
+				"south": {
+					"uv": [0, 4, 7, 7],
+					"texture": "#0"
+				},
+				"west": {
+					"uv": [7, 4, 8, 7],
+					"texture": "#0"
+				},
+				"up": {
+					"uv": [0, 3, 7, 4],
+					"texture": "#0"
+				},
+				"down": {
+					"uv": [0, 7, 7, 8],
+					"texture": "#0"
+				}
+			}
+		}
+	]
+}

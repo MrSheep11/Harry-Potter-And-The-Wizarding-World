@@ -1,0 +1,1 @@
+{"passes":[{"vertex_shader":"hpww:post/level_hud","fragment_shader":"hpww:post/level_hud","inputs":[{"sampler_name":"Atlas","location":"hpww_field_guide:level/hud_atlas","width":512,"height":256}],"output":"minecraft:main","uniforms":{"TileConfig":[{"name":"TileData","type":"vec4","value":[49,-1,32,32]}]}}],"targets":{}}

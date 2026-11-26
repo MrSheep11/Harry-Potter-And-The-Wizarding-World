@@ -1,0 +1,8 @@
+scoreboard players set #hint_rear hpww.diagon_alley.rig 0
+execute if entity @s[tag=hpww.diagon_alley.rear] run scoreboard players set #hint_rear hpww.diagon_alley.rig 1
+execute if entity @s[tag=aj.diagonalley_enterance.interaction.block_1] as @a[distance=..7,gamemode=!spectator] run function hpww:main/diagon_alley/internal/hints/first_for_player
+execute if entity @s[tag=aj.diagonalley_enterance.interaction.back_block_1] as @a[distance=..7,gamemode=!spectator] run function hpww:main/diagon_alley/internal/hints/first_for_player
+execute if entity @s[tag=aj.diagonalley_enterance.interaction.block_2] as @a[distance=..7,gamemode=!spectator,scores={diagonalley_wall=1}] if score @s hpww.diagon_alley.rig = #hint_round hpww.diagon_alley.round run function hpww:main/diagon_alley/internal/hints/dust with storage hpww:diagon_alley hint_side
+execute if entity @s[tag=aj.diagonalley_enterance.interaction.back_block_2] as @a[distance=..7,gamemode=!spectator,scores={diagonalley_wall=1}] if score @s hpww.diagon_alley.rig = #hint_round hpww.diagon_alley.round run function hpww:main/diagon_alley/internal/hints/dust with storage hpww:diagon_alley hint_side
+execute if entity @s[tag=aj.diagonalley_enterance.interaction.block_3] as @a[distance=..7,gamemode=!spectator,scores={diagonalley_wall=2}] if score @s hpww.diagon_alley.rig = #hint_round hpww.diagon_alley.round run function hpww:main/diagon_alley/internal/hints/dust with storage hpww:diagon_alley hint_side
+execute if entity @s[tag=aj.diagonalley_enterance.interaction.back_block_3] as @a[distance=..7,gamemode=!spectator,scores={diagonalley_wall=2}] if score @s hpww.diagon_alley.rig = #hint_round hpww.diagon_alley.round run function hpww:main/diagon_alley/internal/hints/dust with storage hpww:diagon_alley hint_side

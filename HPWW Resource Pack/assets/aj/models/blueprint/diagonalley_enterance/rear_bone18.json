@@ -1,0 +1,85 @@
+{
+	"textures": {
+		"0": "aj:blueprint/diagonalley_enterance/brick",
+		"particle": "minecraft:item/pufferfish"
+	},
+	"display": {
+		"head": {
+			"rotation": [0, 180, 0]
+		}
+	},
+	"elements": [
+		{
+			"from": [4.5, 6.5, 7],
+			"to": [11.5, 9.5, 9],
+			"rotation": {
+				"x": 0,
+				"y": 0,
+				"z": 0,
+				"origin": [6.5, 5.5, 8]
+			},
+			"faces": {
+				"north": {
+					"uv": [0, 4, 7, 7],
+					"texture": "#0"
+				},
+				"east": {
+					"uv": [8, 4, 7, 7],
+					"texture": "#0"
+				},
+				"south": {
+					"uv": [0, 4, 7, 7],
+					"texture": "#0"
+				},
+				"west": {
+					"uv": [16, 4, 15, 7],
+					"texture": "#0"
+				},
+				"up": {
+					"uv": [0, 4, 7, 3],
+					"texture": "#0"
+				},
+				"down": {
+					"uv": [0, 8, 7, 7],
+					"texture": "#0"
+				}
+			}
+		},
+		{
+			"from": [4.5, -9.5, 7],
+			"to": [11.5, -6.5, 9],
+			"rotation": {
+				"x": 0,
+				"y": 0,
+				"z": 0,
+				"origin": [6.5, -10.5, 8]
+			},
+			"faces": {
+				"north": {
+					"uv": [0, 4, 7, 7],
+					"texture": "#0"
+				},
+				"east": {
+					"uv": [8, 4, 7, 7],
+					"texture": "#0"
+				},
+				"south": {
+					"uv": [0, 4, 7, 7],
+					"texture": "#0"
+				},
+				"west": {
+					"uv": [16, 4, 15, 7],
+					"texture": "#0"
+				},
+				"up": {
+					"uv": [0, 4, 7, 3],
+					"texture": "#0"
+				},
+				"down": {
+					"uv": [0, 8, 7, 7],
+					"texture": "#0"
+				}
+			}
+		}
+	]
+}

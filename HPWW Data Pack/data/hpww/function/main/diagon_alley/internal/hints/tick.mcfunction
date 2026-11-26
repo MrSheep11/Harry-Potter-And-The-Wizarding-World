@@ -1,0 +1,2 @@
+schedule function hpww:main/diagon_alley/internal/hints/tick 5t replace
+execute if entity @a[gamemode=!spectator] as @e[type=minecraft:item_display,tag=aj.diagonalley_enterance.root,tag=!hpww.diagon_alley.opened,tag=!aj.diagonalley_enterance.animation.open.playing,tag=!aj.diagonalley_enterance.animation.close.playing,scores={aj.id=1..}] at @s if entity @a[distance=..8,gamemode=!spectator] run function hpww:main/diagon_alley/internal/hints/wall

@@ -58,6 +58,11 @@ converts loot functions, predicates, and advancement conditions to the new
 formats. Text shaders use the new imports, explicit input/output locations,
 vertex-index name, and order-independent transparency passes.
 
+The working datapack and release copies carry a 26.3-only `hpww_aj_26_3`
+overlay. It overrides the two global Animated Java interaction advancements so
+older Blockbench exports cannot reintroduce the 26.3 reload error. The generated
+advancements under `data/animated_java` can still be rewritten by the exporter.
+
 1.21.11 uses datapack format 94.1 and resource pack format 75.0. It gets the four
 older text shader variants, with the current GUI placement and color behavior.
 References to newer vanilla blocks/entities are removed from hitbox registry

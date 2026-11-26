@@ -1,20 +1,29 @@
 {
-  "pack": {
-    "description": [
-      {
-        "text": "HPWW Resource And Data hpww. ",
-        "color": "#d18ce6",
-        "bold": false,
-        "italic": false
-      },
-      {
-        "text": "by MrSheep",
-        "color": "gold",
-        "bold": true,
-        "italic": false
-      }
-    ],
-    "min_format": 121,
-    "max_format": 121
-  }
+	"pack": {
+		"description": [
+			{
+				"text": "HPWW Resource And Data hpww. ",
+				"color": "#d18ce6",
+				"bold": false,
+				"italic": false
+			},
+			{
+				"text": "by MrSheep",
+				"color": "gold",
+				"bold": true,
+				"italic": false
+			}
+		],
+		"min_format": 121,
+		"max_format": 121
+	},
+	"overlays": {
+		"entries": [
+			{
+				"directory": "hpww_aj_26_3",
+				"min_format": 121,
+				"max_format": 121
+			}
+		]
+	}
 }

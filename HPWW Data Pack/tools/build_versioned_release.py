@@ -289,6 +289,10 @@ def copy_pack(source, target, kind):
         raise SystemExit(f"Output already exists: {target}. Use a fresh --work directory.")
     target.mkdir(parents=True)
     shutil.copytree(source / ("data" if kind == "data" else "assets"), target / ("data" if kind == "data" else "assets"))
+    if kind == "data":
+        overlay = source / "hpww_aj_26_3"
+        if overlay.is_dir():
+            shutil.copytree(overlay, target / overlay.name)
     for name in ("pack.mcmeta", "pack.png"):
         if (source / name).is_file():
             shutil.copy2(source / name, target / name)
