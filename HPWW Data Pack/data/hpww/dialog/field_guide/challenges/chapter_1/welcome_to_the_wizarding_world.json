@@ -1,8 +1,7 @@
 {
     "type": "minecraft:notice",
     "title": {
-        "text": "Welcome to the Wizarding World",
-        "color": "gold"
+        "text": "Welcome to the Wizarding World"
         
     }
 }

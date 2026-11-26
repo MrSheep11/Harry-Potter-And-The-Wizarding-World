@@ -1,0 +1,16 @@
+{
+  "title": "The Wizarding World",
+  "icon": {
+  "id": "minecraft:structure_block",
+  "components": {
+    "minecraft:item_model": "hpww_items:field_guide"
+  }
+},
+  "items": [
+    { "type": "unjank:loot", "loot": "hpww:items/field_guide" },
+    { "type": "unjank:loot", "loot": "hpww:wand_crafting_table" },
+    { "type": "unjank:loot", "loot": "hpww:cores/dragon_heart_string"},
+    { "type": "unjank:loot", "loot": "hpww:cores/phoenix_feather"},
+    { "type": "unjank:loot", "loot": "hpww:cores/unicorn_hair"}
+  ]
+}

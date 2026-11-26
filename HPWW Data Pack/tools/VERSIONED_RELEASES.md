@@ -58,10 +58,16 @@ converts loot functions, predicates, and advancement conditions to the new
 formats. Text shaders use the new imports, explicit input/output locations,
 vertex-index name, and order-independent transparency passes.
 
-The working datapack and release copies carry a 26.3-only `hpww_aj_26_3`
-overlay. It overrides the two global Animated Java interaction advancements so
-older Blockbench exports cannot reintroduce the 26.3 reload error. The generated
-advancements under `data/animated_java` can still be rewritten by the exporter.
+The working datapack and release copies carry the `hpww_aj_26_3` overlay, active
+only on 26.3. Animated Java exports share two global click advancements; an old
+exporter or a blueprint targeting 26.2 can replace them with the old predicate
+format. Animated Java 1.11 and a 26.3 blueprint target generate the correct format.
+
+The overlay is also a standalone datapack. In an actively edited 26.3 save, a
+separate copy named `HPWW Animated Java 26.3 Fix` can be placed in `datapacks`
+and loaded after `HPWW Data Pack`. It keeps the overrides outside Blockbench's
+export destination, even if the main pack loses its overlay. Do not enable the
+standalone fix on 1.21.11.
 
 1.21.11 uses datapack format 94.1 and resource pack format 75.0. It gets the four
 older text shader variants, with the current GUI placement and color behavior.

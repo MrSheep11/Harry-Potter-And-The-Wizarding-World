@@ -6,6 +6,11 @@ execute if score #startup_message_player startup_message matches 1 run tellraw @
 
   kill @e[type=armor_stand, tag=levioso_active]
 
+  scoreboard objectives add hpww.levioso.caster0 dummy
+  scoreboard objectives add hpww.levioso.caster1 dummy
+  scoreboard objectives add hpww.levioso.caster2 dummy
+  scoreboard objectives add hpww.levioso.caster3 dummy
+  scoreboard objectives add hpww.levioso.combo_at dummy
   execute as @a run attribute @s air_drag_modifier base reset
   execute as @a run attribute @s gravity base reset
   execute as @e[tag=levioso_active] at @s run function hpww:main/spells/function/levioso/function/end

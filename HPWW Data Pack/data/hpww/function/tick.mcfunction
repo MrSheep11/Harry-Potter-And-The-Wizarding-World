@@ -2,7 +2,7 @@
 execute as @a at @s run function hpww:main/spells/function/lumos/tick
 
 # Wand Crafting Table
-    execute at @a if entity @e[tag=hpww.custom_block,limit=1, distance=..10, type=item_display,] as @e[tag=hpww.custom_block, distance=..10, type=item_display] at @s run function hpww:main/block/as_blocks
+    execute as @e[type=item_display,tag=hpww.custom_block] at @s if entity @a[distance=..10,limit=1] run function hpww:main/block/as_blocks
     execute at @a if entity @e[tag=wand_crafting_table_detector,limit=1, distance=..10, type=armor_stand] run function hpww:main/wand_crafting/detect/function/cores_and_wood
 
 

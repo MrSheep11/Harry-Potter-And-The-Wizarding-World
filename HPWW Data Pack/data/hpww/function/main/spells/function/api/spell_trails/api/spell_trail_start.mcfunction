@@ -17,6 +17,7 @@ data remove storage hpww:trail_storage out
 
 
 #Save data
+execute if entity @s[type=player] run data modify storage hpww:trail_storage in.caster_uuid set from entity @s UUID
 $data modify storage hpww:trail_storage in.trail_end_function.namespace set value $(end_function_namespace)
 
 
